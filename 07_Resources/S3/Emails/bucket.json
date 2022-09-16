@@ -2,8 +2,6 @@
 	"S3Email": {
 		"Type": "AWS::S3::Bucket",
 		"DependsOn": [
-			"LambdaEmailOutbound",
-			"LambdaEmailConverter",
 			"LambdaEmailInbound"
 		],
 		"Properties": {
@@ -47,54 +45,6 @@
 								"Rules": [{
 									"Name": "prefix",
 									"Value": "TMP/email_in"
-								}]
-							}
-						}
-					},
-					{
-						"Function": { "Fn::GetAtt": [ "LambdaEmailOutbound", "Arn" ] },
-						"Event": "s3:ObjectCreated:Put",
-						"Filter": {
-							"S3Key": {
-								"Rules": [{
-									"Name": "prefix",
-									"Value": "TMP/email_out/json"
-								}]
-							}
-						}
-					},
-					{
-						"Function": { "Fn::GetAtt": [ "LambdaEmailConverter", "Arn" ] },
-						"Event": "s3:ObjectCreated:Copy",
-						"Filter": {
-							"S3Key": {
-								"Rules": [{
-									"Name": "prefix",
-									"Value": "Sent/"
-								}]
-							}
-						}
-					},
-					{
-						"Function": { "Fn::GetAtt": [ "LambdaEmailConverter", "Arn" ] },
-						"Event": "s3:ObjectCreated:Copy",
-						"Filter": {
-							"S3Key": {
-								"Rules": [{
-									"Name": "prefix",
-									"Value": "Inbox/"
-								}]
-							}
-						}
-					},
-					{
-						"Function": { "Fn::GetAtt": [ "LambdaEmailConverter", "Arn" ] },
-						"Event": "s3:ObjectCreated:Copy",
-						"Filter": {
-							"S3Key": {
-								"Rules": [{
-									"Name": "prefix",
-									"Value": "Today/"
 								}]
 							}
 						}
